@@ -22,7 +22,7 @@ mongoose.connect(
 );
 
 app.get("/", function (req, res) {
-    res.send("Welcome to depgo API!");
+    res.send("Welcome to DEPGO API!");
 });
 
 // Bootstrap server
