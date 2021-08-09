@@ -15,15 +15,6 @@ app.use(express.urlencoded({
     extended: true
 }));
 
-app.use("/v1",router);
-
-// Handling not found errors
-app.use (function (req,res,next){
-    const error= new Error ("Not found");
-    error.status = 404;
-    next (error);
-})
-
 // Database connection
 mongoose.connect(  
     "mongodb+srv://daniela:bedujavascript@cluster0.yyi8g.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
@@ -31,7 +22,7 @@ mongoose.connect(
 );
 
 app.get("/", function (req, res) {
-    res.send("Welcome to customer satisfaction API!");
+    res.send("Welcome to depgo API!");
 });
 
 // Bootstrap server
