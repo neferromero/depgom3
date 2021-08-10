@@ -21,11 +21,51 @@ mongoose.connect(
     { useUnifiedTopology: true, useNewUrlParser: true}
 );
 
+
+const ReviewSchema = mongoose.Schema({
+    homeId: {
+        type: Number,
+        required: true
+    },
+    score: {
+        type: Number,
+        min: 1,
+        max: 5,
+        required: true
+    },
+    
+});
+
+const Review = mongoose.model("review", ReviewSchema);
+
+app.post("/review", function(req, res) {
+    Review.create(req.body).then(function (review) {
+        res.send(review);
+    });
+})
+
+
+app.get("/report/:locationId", checkCredentials, function(req, res) {
+    const locationId = req.params.locationId;
+    Review.find({locationId: locationId}).then(function (reviews) {
+        const clients = reviews.length;
+        const scoreSum = reviews.reduce(function (sum, review) {
+            return sum + review.score;
+        }, 0);
+        const average = scoreSum / clients;
+        res.send({
+            clients,
+            scoreAverage: average ? average : 0,
+        });
+    });
+})
+
+
 app.get("/", function (req, res) {
     res.send("Welcome to DEPGO API!");
 });
 
 // Bootstrap server
 const server = app.listen(process.env.PORT || 3000, function () {
-    console.log(`App running.Listening on port ${server.address().port}`);
-});
+    console.log(`Listening on port ${server.address().port}`);
+}); 
