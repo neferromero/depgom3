@@ -45,22 +45,6 @@ app.post("/review", function(req, res) {
 })
 
 
-app.get("/report/:locationId", checkCredentials, function(req, res) {
-    const locationId = req.params.locationId;
-    Review.find({locationId: locationId}).then(function (reviews) {
-        const clients = reviews.length;
-        const scoreSum = reviews.reduce(function (sum, review) {
-            return sum + review.score;
-        }, 0);
-        const average = scoreSum / clients;
-        res.send({
-            clients,
-            scoreAverage: average ? average : 0,
-        });
-    });
-})
-
-
 app.get("/", function (req, res) {
     res.send("Welcome to DEPGO API!");
 });
